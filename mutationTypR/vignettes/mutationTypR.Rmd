@@ -1,0 +1,64 @@
+---
+title: "Analyzing Mutation Types with mutationTypR"
+author: "Sabrina A. Tidjani"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Analyzing Mutation Types with mutationTypR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r style, echo = FALSE, results = 'asis'}
+library(BiocStyle)
+```
+
+```{r, echo = FALSE}
+library(knitr)
+library(mutationTypR)
+```
+
+# Introduction
+
+The mutationTypR package provides tools for extracting and analyzing mutation types from VCF data. It focuses on identifying single nucleotide variants (SNVs) and categorizing them based on their genomic context and mutation characteristics.
+Using mutationTypR, you can define mutation types in a unique format of “UP[REF>ALT]DOWN,” highlighting the mutation and its surrounding genomic sequence. The package also efficiently handles data redundancy by converting certain mutation types to their reverse complements.
+
+# Usage
+
+##Load necessary libraries
+
+```{r}
+library(VariantAnnotation)
+library(GenomeInfoDb)
+library(BSgenome.Hsapiens.UCSC.hg19)
+```
+
+Here, we use a sample VCF file and reference genome. Replace these with your actual file path or VCF object and reference genome object.
+
+```{r}
+vcffile <- system.file("extdata", "chr22.vcf.gz", package = "VariantAnnotation")
+vcf_data <- VariantAnnotation::readVcf(vcffile, genome = "hg19")
+vcf_data <- GenomeInfoDb::renameSeqlevels(vcf_data, 'chr22')
+Hsapiens <- BSgenome.Hsapiens.UCSC.hg19
+```
+
+## Extract mutation types
+
+extractMutationTypes processes VCF data to identify mutation types, considering the specified genomic sequence length around the mutation site. This function outputs detailed mutation descriptions, including the affected bases and their genomic context.
+
+```{r}
+mutation_types <- extractMutationTypes(vcf_data, Hsapiens, 3)
+```
+
+# Summarize and plot mutation types
+
+summarizeAndPlotMutations provides a quantitative summary of mutation types in a count table, which is useful for analyzing mutation frequencies. Additionally, setting plot = TRUE enables visualization of these counts, offering an accessible way to interpret and present the data. The top_n parameter allows focusing on the most frequent mutation types.
+
+```{r}
+summary_df <- summarizeAndPlotMutations(vcf_data, Hsapiens, context_length = 3, plot = TRUE, top_n = 20)
+print(summary_df)
+```
+

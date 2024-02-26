@@ -1,0 +1,18 @@
+Package: mutationTypR
+Type: Package
+Version: 0.1.0
+Title: Characterization of Mutation Types from a Set of Single Nucleotide Variants
+Depends: R(>= 3.6)
+Imports: VariantAnnotation, BSgenome, GenomicRanges, IRanges, ggplot2, Biostrings, BSgenome.Hsapiens.UCSC.hg19, GenomeInfoDb
+Suggests: knitr, rmarkdown, BiocStyle, testthat
+VignetteBuilder: knitr
+Date: 2024-01-11
+Encoding: UTF-8
+Author@R: 
+    person("Sabrina A.", "Tidjani", role = c("aut", "cre") , email = "sabrina.tidjani@mail.polimi.it"))
+Description: This package processes vcf files against a reference genome, identifying SNVs within a specified context length and presenting them in the UP[REF>ALT]DOWN format, alongside a summary mutation count table.
+License: GPL-2
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+biocViews: SNP, GenomicVariation, SomaticMutation, VariantAnnotation, VariantDetection
+NeedsCompilation: no
